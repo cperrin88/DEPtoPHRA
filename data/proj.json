@@ -1,12 +1,11 @@
-[
-    {"NNP":"VB"},
-    {"VB": "VP"},
-    {"VP": "S"},
-    {"NNP": "NP"},
-    {"DT": "NP"},
-    {"NN": "NP"},
-    {"JJ": "NP"},
-    {"CD": "NP"},
-    {"IN": "PP"},
-    {"NP": "PP"}
-]
+{
+"VB": "VP",
+"VP": "S",
+"NNP": "NP",
+"DT": "NP",
+"NN": "NP",
+"JJ": "NP",
+"CD": "NP",
+"IN": "PP",
+"NP": "PP"
+}

@@ -18,7 +18,8 @@ def main():
     arg = json.load(args.arguments)
     mod = json.load(args.modifiers)
     for dep in deps:
-        converter.Converter(dep, proj, arg, mod)
+        c = converter.Converter(dep, proj, arg, mod)
+        c.convert()
 
 
 if __name__ == '__main__':
