@@ -1,11 +1,7 @@
 {
-"VB": "VP",
-"VP": "S",
-"NNP": "NP",
-"DT": "NP",
-"NN": "NP",
-"JJ": "NP",
-"CD": "NP",
-"IN": "PP",
-"NP": "PP"
+"VB": ["VP", "S"],
+"NNP": ["NP"],
+"NN": ["NP"],
+"CD": ["NP"],
+"IN": ["PP"]
 }
