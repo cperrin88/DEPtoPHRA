@@ -1,11 +1,11 @@
-Vinken  NNP     3
-will    MP      3
+Vinken  NNP     3       ARG
+will    MP      3       ARG
 join    VB      0       ROOT
 the     DT      5
-board   NN      3
-as      IN      3
+board   NN      3       ARG
+as      IN      3       MOD
 a       DT      9
 nonexecutive    JJ      9
 director        NN      6
 Nov     NNP     11
-29      CD      3
+29      CD      3       MOD
