@@ -19,7 +19,9 @@ def main():
     mod = json.load(args.modifiers)
     for dep in deps:
         c = converter.Converter(dep, proj, arg, mod)
-        c.convert()
+        ret = c.convert()
+        print(ret)
+        ret.draw()
 
 
 if __name__ == '__main__':
