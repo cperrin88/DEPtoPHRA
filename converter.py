@@ -4,13 +4,31 @@ from nltk import tree
 
 
 class Converter(object):
+    """
+    A class to convert a dependency structure to a phrase structure
+
+    :param dep_graph: A dependency graph to convert
+    :type dep_graph: nltk.parse.dependencygraph.DependencyGraph
+    :param proj_table: A projection table
+    :type proj_table: dict
+    :param arg_table: An argument table
+    :type arg_table: dict
+    :param mod_table: A modifier table
+    :type mod_table: dict
+    """
     def __init__(self, dep_graph, proj_table, arg_table, mod_table):
+
         self.dep_graph = dep_graph
         self.proj_table = proj_table
         self.arg_table = arg_table
         self.mod_table = mod_table
 
     def convert(self):
+        """
+        Starts the conversion to a phrase structure
+
+        :return: converter.SearchableTree
+        """
         head = self._make_projection(self.dep_graph.root)
         deps = self.dep_graph.root['deps']
         self._convert_subtree(deps, head, self.dep_graph.root)
@@ -54,27 +72,24 @@ class Converter(object):
         n = suptree
         r = right_tree
         while len(n) > 0:
-            new_n = n[len(n)-1]
+            new_n = n[len(n) - 1]
             while len(r) > 1:
                 n.append(r.pop(1))
-            try:
-                n = new_n
-                r = r[0]
-            except:
-                break
-        return
+
+            n = new_n
+            r = r[0]
 
     def _make_projection(self, node):
-        out = SearchableTree(node['word'], list())
-        out = SearchableTree(node['tag'], [out])
+        out = PhraseTree(node['word'], list())
+        out = PhraseTree(node['tag'], [out])
         if not node['tag'] in self.proj_table.keys():
             return out
 
         for tag in self.proj_table[node['tag']]:
-            out = SearchableTree(tag, [out])
+            out = PhraseTree(tag, [out])
         return out
 
-    def _connect_arg_to_head(self, tree, suptree, pos):
+    def _connect_arg_to_head(self, subtree, suptree, pos):
         head_node = suptree.find_fork()
 
         index = 1
@@ -85,7 +100,7 @@ class Converter(object):
             if head_node.label() not in self.arg_table.keys() or self.arg_table[head_node.label()][index] == 0:
                 head_node = head_node.parent()
                 continue
-            tree_node = tree.find_fork()
+            tree_node = subtree.find_fork()
             while tree_node is not None:
                 if tree_node.label() in self.arg_table[head_node.label()][2]:
                     tree_node.clear_parent()
@@ -97,9 +112,9 @@ class Converter(object):
                     return suptree
                 tree_node = tree_node.parent()
 
-        raise Exception()
+        raise KeyError("Can't find a connection to the head in the argument table")
 
-    def _connect_mod_to_head(self, tree, suptree, pos):
+    def _connect_mod_to_head(self, subtree, suptree, pos):
         head_node = suptree.find_fork()
 
         index = 1
@@ -110,7 +125,7 @@ class Converter(object):
             if head_node.label() not in self.mod_table.keys():
                 head_node = head_node.parent()
                 continue
-            tree_node = tree.find_fork()
+            tree_node = subtree.find_fork()
             while tree_node is not None:
                 if tree_node.label() in self.mod_table[head_node.label()][index]:
                     tree_node.clear_parent()
@@ -122,27 +137,11 @@ class Converter(object):
                     return suptree
                 tree_node = tree_node.parent()
 
-        raise Exception()
+        raise KeyError("Can't find a connection to the head in the modifier table")
 
 
-class SearchableTree(tree.ParentedTree):
-    def find(self, string):
-        if self.label() == string:
-            return self
-        for leave in self:
-            return leave.find(string)
-        return ""
-
-    def find_lowest(self, string):
-        for leave in self:
-            f = leave.find(string)
-            if f != "":
-                return f
-        if self.label() == string:
-            return self
-        return ""
-
-    def find_fork(self):
+class PhraseTree(tree.ParentedTree):
+    def find_fork(self)-> tree.Tree:
         if len(self) != 1:
             return self
 

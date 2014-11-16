@@ -1,9 +1,14 @@
-__author__ = 'Christopher Perrin'
+"""
+Author: Christopher Perrin
+
+This software converts dependency structures to phrase structures. It follows a algorithm by Xia Fei and Martha Palmer.
+"""
 
 from nltk import parse
 import argparse
 import json
 import converter
+
 
 def main():
     parser = argparse.ArgumentParser(description="Converts a dependency structure to a phrase structure")
@@ -20,9 +25,7 @@ def main():
     for dep in deps:
         c = converter.Converter(dep, proj, arg, mod)
         ret = c.convert()
-        print(ret)
         ret.draw()
-
 
 if __name__ == '__main__':
     main()
