@@ -27,7 +27,8 @@ class Converter(object):
         """
         Starts the conversion to a phrase structure
 
-        :return: converter.SearchableTree
+        :return: The phrase structure tree as derived from the dependency tree
+        :rtype: converter.PhraseTree
         """
         head = self._make_projection(self.dep_graph.root)
         deps = self.dep_graph.root['deps']
@@ -80,6 +81,14 @@ class Converter(object):
             r = r[0]
 
     def _make_projection(self, node):
+        """
+        Projects a node according to the projection table.
+
+        :param node: A node that should be projected according to the projection table
+        :type node: converter.PhraseTree
+        :return: A projected node
+        :rtype: converter.PhraseTree
+        """
         out = PhraseTree(node['word'], list())
         out = PhraseTree(node['tag'], [out])
         if not node['tag'] in self.proj_table.keys():
@@ -112,7 +121,7 @@ class Converter(object):
                     return suptree
                 tree_node = tree_node.parent()
 
-        raise KeyError("Can't find a connection to the head in the argument table")
+        raise ValueError("Can't find a connection to the head in the argument table")
 
     def _connect_mod_to_head(self, subtree, suptree, pos):
         head_node = suptree.find_fork()
@@ -137,7 +146,7 @@ class Converter(object):
                     return suptree
                 tree_node = tree_node.parent()
 
-        raise KeyError("Can't find a connection to the head in the modifier table")
+        raise ValueError("Can't find a connection to the head in the modifier table")
 
 
 class PhraseTree(tree.ParentedTree):
