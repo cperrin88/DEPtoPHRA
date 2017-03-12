@@ -13,7 +13,7 @@ To run the software you need 4 files:
  - Projection table: This table projects categories to other categories
  - Argument table: This table is needed to attach the projections of arguments to the head
  - Modification table: This table is needed to attach the projections of modifications to the head
- 
+
 For examples are in the `example_data` folder.
 
 Example run:
@@ -30,19 +30,18 @@ The output would be:
 
     usage: DEPtoPHRA.py [-h] [-d] [-q] [-o OUTFILE]
                         data projections arguments modifiers
-    
+
     Converts a dependency structure to a phrase structure
-    
+
     positional arguments:
       data                  Dependency graph in Malt-TAB format
       projections           Projections in JSON format
       arguments             Argument table in JSON format
       modifiers             Modification table in JSON format
-    
+
     optional arguments:
       -h, --help            show this help message and exit
       -d, --draw            Draw the graph (windowmanager needed)
       -q, --qtree           Print latex qTree to the console
       -o OUTFILE, --outfile OUTFILE
                             Write tree to file
-                            

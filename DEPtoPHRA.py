@@ -41,5 +41,6 @@ def main():
             args.outfile.flush()
         if args.draw:
             ret.draw()
+
 if __name__ == '__main__':
     main()
